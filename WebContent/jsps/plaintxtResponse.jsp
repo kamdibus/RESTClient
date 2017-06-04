@@ -21,5 +21,7 @@
 	<a href="xml">xml response</a>
 	<br>
 	<a href="html">html response</a>
+	<br><br>
+	<a href="index.html">Back to home</a>
 </body>
 </html>

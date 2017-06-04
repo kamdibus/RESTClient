@@ -16,11 +16,13 @@
 		}
 	%>
 	<i><%=((ClientClass) (session.getAttribute("clientClass"))).getResponse()%><br>
-	<br></i>
+		<br></i>
 	<%=((ClientClass) (session.getAttribute("clientClass"))).getXmlAnswer()%>
-	<br>
+	<br><br>
 	<a href="html">html response</a>
 	<br>
 	<a href="txt">plain txt response</a>
+	<br><br>
+	<a href="index.html">Back to home</a>
 </body>
 </html>

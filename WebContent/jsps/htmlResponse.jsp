@@ -15,10 +15,14 @@
 			session.setAttribute("clientClass", new ClientClass());
 		}
 	%>
-	<i><%=((ClientClass) (session.getAttribute("clientClass"))).getResponse()%><br><br></i>
+	<i><%=((ClientClass) (session.getAttribute("clientClass"))).getResponse()%><br>
+	<br></i>
 	<%=((ClientClass) (session.getAttribute("clientClass"))).getHtmlAnswer()%>
 	<br>
-	<a href="xml">xml response</a><br>
+	<a href="xml">xml response</a>
+	<br>
 	<a href="txt">plain txt response</a>
+	<br><br>
+	<a href="index.html">Back to home</a>
 </body>
 </html>
