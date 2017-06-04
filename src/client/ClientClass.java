@@ -1,12 +1,21 @@
 package client;
 
+import java.io.StringWriter;
 import java.net.URI;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 public class ClientClass {
 	
@@ -20,17 +29,39 @@ public class ClientClass {
 	private WebTarget webTarget;
 
 //	webTarget = webTarget.path("student");
-	public String response;
-//	String plainAnswer = webTarget.request().accept(MediaType.TEXT_PLAIN).get(String.class);
-//	String htmlAnswer = webTarget.request().accept(MediaType.TEXT_HTML).get(String.class);
+	private String response;
+	private String plainAnswer;
+	private String htmlAnswer;
 	private String xmlAnswer;
 	
 	public ClientClass() {
 		client = ClientBuilder.newClient();
 		uri = UriBuilder.fromUri("http://localhost:8001/RESTApi/student").build();
 		webTarget = client.target(uri);
-		xmlAnswer = webTarget.request().accept(MediaType.APPLICATION_XML).get(String.class);
-//		response = webTarget.request().accept(MediaType.TEXT_PLAIN).get(Response.class).toString();
+		
+//		xmlAnswer = webTarget.request().accept(MediaType.APPLICATION_XML).get(String.class);
+		response = webTarget.request().accept(MediaType.TEXT_HTML).get(Response.class).toString();
+	
+		plainAnswer = webTarget.request().accept(MediaType.TEXT_PLAIN).get(String.class);
+		
+		htmlAnswer = webTarget.request().accept(MediaType.TEXT_HTML).get(String.class);
+		
+		try{
+		DOMSource source  = webTarget.request().accept(MediaType.APPLICATION_XML).get(DOMSource.class);
+		Transformer transformer = TransformerFactory.newInstance().newTransformer();
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		//initialize StreamResult with File object to save to file
+		StreamResult result = new StreamResult(new StringWriter());
+		transformer.transform(source, result);
+		xmlAnswer = result.getWriter().toString();
+		}catch(TransformerFactoryConfigurationError e){
+			System.err.println(e.getMessage());
+			xmlAnswer = "An error has occured during formatting xml answer";
+		}catch(TransformerException e){
+			System.err.println(e.getMessage());
+			xmlAnswer = "An error has occured during formatting xml answer";
+		}
+
 	}
 
 	public String getXmlAnswer() {
@@ -47,6 +78,22 @@ public class ClientClass {
 
 	public void setResponse(String response) {
 		this.response = response;
+	}
+
+	public String getPlainAnswer() {
+		return plainAnswer;
+	}
+
+	public void setPlainAnswer(String plainAnswer) {
+		this.plainAnswer = plainAnswer;
+	}
+
+	public String getHtmlAnswer() {
+		return htmlAnswer;
+	}
+
+	public void setHtmlAnswer(String htmlAnswer) {
+		this.htmlAnswer = htmlAnswer;
 	}
 	
 }
