@@ -14,8 +14,24 @@
 	</welcome-file-list>
 
 	<servlet>
-		<servlet-name>student</servlet-name>
-		<jsp-file>/jsps/student.jsp</jsp-file>
+		<servlet-name>xmlResponse</servlet-name>
+		<jsp-file>/jsps/xmlResponse.jsp</jsp-file>
+		<init-param>
+			<param-name>hello</param-name>
+			<param-value>test</param-value>
+		</init-param>
+	</servlet>
+	<servlet>
+		<servlet-name>htmlResponse</servlet-name>
+		<jsp-file>/jsps/htmlResponse.jsp</jsp-file>
+		<init-param>
+			<param-name>hello</param-name>
+			<param-value>test</param-value>
+		</init-param>
+	</servlet>
+	<servlet>
+		<servlet-name>plaintxtResponse</servlet-name>
+		<jsp-file>/jsps/plaintxtResponse.jsp</jsp-file>
 		<init-param>
 			<param-name>hello</param-name>
 			<param-value>test</param-value>
@@ -23,7 +39,15 @@
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>student</servlet-name>
-		<url-pattern>/</url-pattern>
+		<servlet-name>xmlResponse</servlet-name>
+		<url-pattern>/xml</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>htmlResponse</servlet-name>
+		<url-pattern>/html</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>plaintxtResponse</servlet-name>
+		<url-pattern>/txt</url-pattern>
 	</servlet-mapping>
 </web-app>

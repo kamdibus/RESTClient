@@ -11,12 +11,16 @@
 		session = request.getSession();
 	%>
 	<%
-		session.setAttribute("clientClass", new ClientClass());
+		if (session.getAttribute("clientClass") == null) {
+			session.setAttribute("clientClass", new ClientClass());
+		}
 	%>
-	<i><%=((ClientClass) (session.getAttribute("clientClass"))).getResponse()%><br><br></i>
+	<i><%=((ClientClass) (session.getAttribute("clientClass"))).getResponse()%><br>
+	<br></i>
 	<%=((ClientClass) (session.getAttribute("clientClass"))).getXmlAnswer()%>
 	<br>
-	<a href="htmlResponse.jsp">html response</a><br>
-	<a href="plaintxtResponse.jsp">plain txt response</a>
+	<a href="html">html response</a>
+	<br>
+	<a href="txt">plain txt response</a>
 </body>
 </html>
