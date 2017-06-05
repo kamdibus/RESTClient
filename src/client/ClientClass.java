@@ -17,47 +17,49 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+/**
+ * 
+ * @author Kamil Bidus
+ *
+ */
 public class ClientClass {
-	
+
 	private Client client;
-//	URI uri = UriBuilder.fromUri("http://localhost:8001/RESTApi").queryParam("idx", "12345").build();
 	private URI uri;
-	// URI uri = UriBuilder.fromUri("http://localhost:8080/proz")
-	// .queryParam("idx", "12345").build();
-	// URI uri = URI.create(http://localhost:8080/proz);
 
 	private WebTarget webTarget;
 
-//	webTarget = webTarget.path("student");
 	private String response;
 	private String plainAnswer;
 	private String htmlAnswer;
 	private String xmlAnswer;
-	
+
+	/**
+	 * Default ctor sets all necessery parameters for connecting RESTApi. Then
+	 * it saves the responses in appropriate strings.
+	 */
 	public ClientClass() {
 		client = ClientBuilder.newClient();
 		uri = UriBuilder.fromUri("http://localhost:8001/RESTApi/student").build();
 		webTarget = client.target(uri);
-		
-//		xmlAnswer = webTarget.request().accept(MediaType.APPLICATION_XML).get(String.class);
+
 		response = webTarget.request().accept(MediaType.TEXT_HTML).get(Response.class).toString();
-	
+
 		plainAnswer = webTarget.request().accept(MediaType.TEXT_PLAIN).get(String.class);
-		
+
 		htmlAnswer = webTarget.request().accept(MediaType.TEXT_HTML).get(String.class);
-		
-		try{
-		DOMSource source  = webTarget.request().accept(MediaType.APPLICATION_XML).get(DOMSource.class);
-		Transformer transformer = TransformerFactory.newInstance().newTransformer();
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		//initialize StreamResult with File object to save to file
-		StreamResult result = new StreamResult(new StringWriter());
-		transformer.transform(source, result);
-		xmlAnswer = result.getWriter().toString();
-		}catch(TransformerFactoryConfigurationError e){
+
+		try {
+			DOMSource source = webTarget.request().accept(MediaType.APPLICATION_XML).get(DOMSource.class);
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			StreamResult result = new StreamResult(new StringWriter());
+			transformer.transform(source, result);
+			xmlAnswer = result.getWriter().toString();
+		} catch (TransformerFactoryConfigurationError e) {
 			System.err.println(e.getMessage());
 			xmlAnswer = "An error has occured during formatting xml answer";
-		}catch(TransformerException e){
+		} catch (TransformerException e) {
 			System.err.println(e.getMessage());
 			xmlAnswer = "An error has occured during formatting xml answer";
 		}
@@ -95,5 +97,5 @@ public class ClientClass {
 	public void setHtmlAnswer(String htmlAnswer) {
 		this.htmlAnswer = htmlAnswer;
 	}
-	
+
 }
